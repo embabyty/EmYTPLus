@@ -46,9 +46,9 @@ on:
         type: string
 
       tweak_url:
-        description: "URL to the YouTube Plus tweak file"
+        description: "URL to the YouTube Plus tweak file (optional, leave empty to build from source)"
         default: ""
-        required: true
+        required: false
         type: string
 
       tweak_version:
