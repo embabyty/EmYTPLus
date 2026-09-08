@@ -51,6 +51,12 @@ on:
         required: true
         type: string
 
+      tweak_version:
+        description: "The version of the tweak to use. Enter the version manually from dayanch96/YTLite/releases or leave default"
+        default: "5.2.2"
+        required: true
+        type: string
+
       display_name:
         description: "App Name (Optional)"
         default: "YouTube"
@@ -84,6 +90,7 @@ jobs:
       enable_ytabc: ${{ inputs.enable_ytabc }}
       enable_demc: ${{ inputs.enable_demc }}
       tweak_url: ${{ inputs.tweak_url }}
+      tweak_version: ${{ inputs.tweak_version }}
 
   package:
     name: Package IPA (Beta)
