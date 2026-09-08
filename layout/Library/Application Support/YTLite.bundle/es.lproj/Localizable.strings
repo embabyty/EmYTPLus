@@ -1,14 +1,3 @@
-/* Tweak account section */
-"Account" = "Account";
-"SkipLogInAlert" = "Suprimir recordatorio de inicio de sesión";
-"LogIn" = "Log in";
-"ManageAccount" = "Administrar cuenta";
-"AccessDenied" = "Acceso denegado";
-"LogOut" = "Cerrar sesión";
-"LogOutTitle" = "Cerrar sesión";
-"LogOutMessage" = "¿Seguro que quieres continuar?";
-"FeaturesNotActivated" = "No has iniciado sesión. Para acceder a las características de YouTube Plus, por favor inicia sesión con una subscripción activa.";
-
 /* Main section */
 "Main" = "Principal";
 "Search" = "Buscar";

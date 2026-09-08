@@ -1,14 +1,3 @@
-/* Tweak account section */
-"Account" = "Account";
-"SkipLogInAlert" = "Скрыть напоминание о входе";
-"LogIn" = "Log in";
-"ManageAccount" = "Управление аккаунтом";
-"AccessDenied" = "Нет доступа";
-"LogOut" = "Выйти";
-"LogOutTitle" = "Выход";
-"LogOutMessage" = "Уверены, что хотите продолжить?";
-"FeaturesNotActivated" = "Вы не вошли в аккаунт. Для доступа к функциям YouTube Plus войдите с активной подпиской.";
-
 /* Main section */
 "Main" = "Основные";
 "Search" = "Поиск";
