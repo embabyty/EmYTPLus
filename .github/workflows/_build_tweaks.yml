@@ -88,6 +88,14 @@ jobs:
           git checkout
           mv *.sdk $THEOS/sdks
 
+      # YTLite source builds import <roothide.h>; the roothide stub header
+      # provides no-op implementations (path passthrough), which is correct
+      # for sideloaded (non-jailbroken) builds
+      - name: Download roothide stub header
+        if: ${{ inputs.tweak_version != '' }}
+        run: |
+          curl -fsSL https://raw.githubusercontent.com/roothide/libroothide/main/stub.h -o "$THEOS/include/roothide.h"
+
       # Build YouTube Plus from this repository's source instead of
       # downloading the official prebuilt .deb (which enforces the Patreon
       # subscription gate)
@@ -108,8 +116,12 @@ jobs:
           fi
 
       - name: Clone YouTubeHeader
-        if: ${{ inputs.enable_youpip || inputs.enable_ytuhd || inputs.enable_yq || inputs.enable_ryd || inputs.enable_ytabc || inputs.enable_demc }}
+        if: ${{ inputs.tweak_version != '' || inputs.enable_youpip || inputs.enable_ytuhd || inputs.enable_yq || inputs.enable_ryd || inputs.enable_ytabc || inputs.enable_demc }}
         run: |
+          # YTLite source builds import headers from a sibling directory
+          if [ ! -d "$GITHUB_WORKSPACE/../YouTubeHeader" ]; then
+            git clone --quiet --depth=1 https://github.com/PoomSmart/YouTubeHeader.git "$GITHUB_WORKSPACE/../YouTubeHeader"
+          fi
           if [ -d "$THEOS/include/YouTubeHeader" ]; then
             cd $THEOS/include/YouTubeHeader && git pull
           else
@@ -119,6 +131,18 @@ jobs:
             rm -rf "$THEOS/include/YTHeaders"
             cp -r "$THEOS/include/YouTubeHeader" "$THEOS/include/YTHeaders"
           fi
+
+      # YTNativeShare.x imports protobuf Objective-C headers from a sibling
+      # directory; pinned to the commit used by youtube-native-share
+      - name: Clone protobuf headers
+        if: ${{ inputs.tweak_version != '' }}
+        run: |
+          git clone --quiet --filter=blob:none --no-checkout https://github.com/protocolbuffers/protobuf "$GITHUB_WORKSPACE/../protobuf"
+          cd "$GITHUB_WORKSPACE/../protobuf"
+          git sparse-checkout init --no-cone
+          git sparse-checkout set objectivec
+          git fetch --quiet --depth=1 origin b8764f0941a6a5d500c48671716f0de81eb1dcaf
+          git checkout --quiet FETCH_HEAD
 
       - name: Clone PSHeader
         if: ${{ inputs.enable_youpip || inputs.enable_ytuhd || inputs.enable_yq || inputs.enable_ryd || inputs.enable_ytabc || inputs.enable_demc }}
