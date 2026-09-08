@@ -1177,6 +1177,55 @@ static void genImageFromLayer(CALayer *layer, UIColor *backgroundColor, void (^c
 
     %orig;
 }
+
+// Floating Frosted Glass Navigation (Tab) Bar
+- (void)layoutSubviews {
+    UIView *superview = self.superview;
+    if (superview && superview.bounds.size.width > 0) {
+        CGFloat inset = 10.0;
+        CGRect frame = self.frame;
+        frame.origin.x = inset;
+        frame.size.width = superview.bounds.size.width - (inset * 2);
+        self.frame = frame;
+    }
+
+    %orig;
+
+    if (superview && superview.bounds.size.width > 0) {
+        CGFloat inset = 10.0;
+        CGRect frame = self.frame;
+        frame.origin.x = inset;
+        frame.size.width = superview.bounds.size.width - (inset * 2);
+        self.frame = frame;
+    }
+
+    CGFloat cornerRadius = 22.0;
+    self.backgroundColor = [UIColor clearColor];
+    self.clipsToBounds = NO;
+    self.layer.cornerRadius = cornerRadius;
+    self.layer.cornerCurve = kCACornerCurveContinuous;
+    self.layer.masksToBounds = NO;
+    self.layer.shadowColor = [[UIColor blackColor] colorWithAlphaComponent:0.25].CGColor;
+    self.layer.shadowOpacity = 1.0;
+    self.layer.shadowOffset = CGSizeMake(0, 8);
+    self.layer.shadowRadius = 20.0;
+    self.layer.shadowPath = [UIBezierPath bezierPathWithRoundedRect:self.bounds cornerRadius:cornerRadius].CGPath;
+
+    UIVisualEffectView *blurView = [self viewWithTag:2391];
+    if (!blurView) {
+        blurView = [[UIVisualEffectView alloc] initWithEffect:[UIBlurEffect effectWithStyle:UIBlurEffectStyleSystemThinMaterial]];
+        blurView.tag = 2391;
+        blurView.userInteractionEnabled = NO;
+        blurView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+        blurView.layer.cornerRadius = cornerRadius;
+        blurView.layer.cornerCurve = kCACornerCurveContinuous;
+        blurView.layer.masksToBounds = YES;
+        blurView.frame = self.bounds;
+        [self insertSubview:blurView atIndex:0];
+    } else {
+        blurView.frame = self.bounds;
+    }
+}
 %end
 
 // Hide Tab Bar Indicators
